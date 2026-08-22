@@ -14,9 +14,58 @@
   body { background: #050A0F; color: #fff; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
   a { color: inherit; text-decoration: none; }
 
+  /* ── KEYFRAMES ── */
+  @keyframes draw-line  { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+  @keyframes draw-lg    { from { stroke-dashoffset: 800; } to { stroke-dashoffset: 0; } }
+  @keyframes fade-in    { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse-node { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+  @keyframes flow-dash  { to { stroke-dashoffset: -32; } }
+  @keyframes tile-pop   { from { opacity:0; transform:scale(0.6); } to { opacity:1; transform:scale(1); } }
+  @keyframes scan-sweep { 0% { left:-40%; } 100% { left:130%; } }
+  @keyframes float-bob  { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  @keyframes glow-ring  { 0%,100% { box-shadow:0 0 0 rgba(0,212,255,0); } 50% { box-shadow:0 0 28px rgba(0,212,255,0.2); } }
+  @keyframes border-glow{ 0%,100% { border-color:rgba(0,212,255,0.17); } 50% { border-color:rgba(0,212,255,0.5); } }
+  @keyframes spin-hex   { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+  @keyframes count-up   { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── SCAN SWEEP ON EVERY CARD THUMB ── */
+  .card-thumb { position:relative; overflow:hidden; }
+  .card-thumb::after {
+    content:''; position:absolute; top:0; width:28%; height:100%; pointer-events:none;
+    background: linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.09) 50%, transparent 100%);
+    animation: scan-sweep 5s ease-in-out infinite;
+  }
+  .sample-card:nth-child(1) .card-thumb::after { animation-delay: 0s; }
+  .sample-card:nth-child(2) .card-thumb::after { animation-delay: 0.6s; }
+  .sample-card:nth-child(3) .card-thumb::after { animation-delay: 1.2s; }
+  .sample-card:nth-child(4) .card-thumb::after { animation-delay: 1.8s; }
+  .sample-card:nth-child(5) .card-thumb::after { animation-delay: 2.4s; }
+  .sample-card:nth-child(6) .card-thumb::after { animation-delay: 3.0s; }
+  .sample-card:nth-child(7) .card-thumb::after { animation-delay: 3.6s; }
+  .sample-card:nth-child(8) .card-thumb::after { animation-delay: 4.2s; }
+
+  /* ── CARD FLOAT ── */
+  .sample-card { animation: float-bob 7s ease-in-out infinite; }
+  .sample-card:nth-child(1) { animation-delay:0s; }
+  .sample-card:nth-child(2) { animation-delay:0.8s; }
+  .sample-card:nth-child(3) { animation-delay:1.6s; }
+  .sample-card:nth-child(4) { animation-delay:2.4s; }
+  .sample-card:nth-child(5) { animation-delay:3.2s; }
+  .sample-card:nth-child(6) { animation-delay:4.0s; }
+  .sample-card:nth-child(7) { animation-delay:4.8s; }
+  .sample-card:nth-child(8) { animation-delay:5.6s; }
+  .sample-card:hover { animation: glow-ring 1s ease-in-out infinite !important; transform: translateY(-6px); }
+
+  /* ── CARD BORDER PULSE ── */
+  .sample-card { animation: float-bob 7s ease-in-out infinite, border-glow 4s ease-in-out infinite; }
+
+  /* ── CARD BASE TRANSITIONS ── */
+  .sample-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .sample-card:hover { transform: translateY(-8px) !important; box-shadow: 0 16px 56px rgba(0,212,255,0.22) !important; border-color: rgba(0,212,255,0.6) !important; }
+  .sample-card.hidden { display: none !important; animation: none !important; }
+
   .reveal { opacity: 0; transform: translateY(44px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
   .reveal.visible { opacity: 1; transform: translateY(0); }
-
   #main-nav.scrolled { background: rgba(5,10,15,0.92) !important; backdrop-filter: blur(24px) !important; border-bottom-color: rgba(0,212,255,0.15) !important; }
   .nav-links a:hover { color: #00D4FF !important; }
 
@@ -35,11 +84,6 @@
   .dl-item { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 27px; font-weight: 600; color: #fff; letter-spacing: -.01em; padding: 17px 0; border-bottom: 1px solid rgba(0,212,255,.1); transition: color .2s, padding-left .25s; }
   .dl-item:hover { color: #00D4FF; padding-left: 9px; }
 
-  .sample-card { transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
-  .sample-card:hover { transform: translateY(-6px); box-shadow: 0 8px 48px rgba(0,212,255,0.14); border-color: rgba(0,212,255,0.4) !important; }
-  .sample-card.hidden { display: none !important; }
-  .sample-card:hover .card-img { transform: scale(1.05); }
-  .card-img { transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
   .dl-btn { transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
   .dl-btn:hover { background: #00D4FF !important; color: #050A0F !important; box-shadow: 0 0 20px rgba(0,212,255,0.35) !important; }
 
@@ -47,27 +91,20 @@
   .filter-btn:hover { background: rgba(0,212,255,0.08) !important; }
   .filter-btn.active { background: #00D4FF !important; color: #050A0F !important; border-color: #00D4FF !important; }
 
-  .feat-card { transition: border-color 0.3s, box-shadow 0.3s; }
-  .feat-card:hover { border-color: rgba(0,212,255,0.4) !important; box-shadow: 0 8px 48px rgba(0,212,255,0.1); }
+  .feat-card { transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
+  .feat-card:hover { border-color: rgba(0,212,255,0.4) !important; box-shadow: 0 8px 48px rgba(0,212,255,0.1); transform: translateY(-4px); }
 
   .footer-link:hover { color: #00D4FF !important; }
   .social-btn:hover { border-color: #00D4FF !important; background: rgba(0,212,255,0.08) !important; }
 
-  /* Mobile: featured deliverables grid */
+  /* Mobile */
   @media (max-width: 900px) { .feat-grid { grid-template-columns: 1fr 1fr !important; } }
   @media (max-width: 560px) { .feat-grid { grid-template-columns: 1fr !important; } }
-  /* Mobile: "What You Receive" 4-column grid */
-  @media (max-width: 768px) { .receive-grid { grid-template-columns: 1fr 1fr !important; } }
+  @media (max-width: 768px) { .receive-grid { grid-template-columns: 1fr 1fr !important; } footer { padding-left:28px !important; padding-right:28px !important; } section { padding-left:28px !important; padding-right:28px !important; } }
   @media (max-width: 480px) { .receive-grid { grid-template-columns: 1fr !important; } }
-  /* Mobile: footer padding */
-  @media (max-width: 768px) {
-    footer { padding-left: 28px !important; padding-right: 28px !important; }
-    .sec-inner { padding-left: 28px !important; padding-right: 28px !important; }
-  }
-  /* Mobile: section padding */
-  @media (max-width: 768px) {
-    section[style*="padding:"] { padding-left: 28px !important; padding-right: 28px !important; }
-  }
+
+  /* Blueprint SVG grid helper (used in thumbs) */
+  .bp-grid { stroke: rgba(0,212,255,0.055); stroke-width: 0.5; fill: none; }
 </style>
 </head>
 <body>
@@ -120,9 +157,7 @@
   <div style="position:absolute;top:50%;right:-10%;transform:translateY(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,179,71,0.06) 0%,transparent 65%);pointer-events:none;" aria-hidden="true"></div>
   <div class="hero-inner reveal" style="max-width:1280px;margin:0 auto;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;font-family:'DM Sans',sans-serif;font-size:13px;color:#8599B0;">
-      <a href="index.html" style="color:#8599B0;transition:color 0.2s;">Home</a>
-      <span style="color:#3D5068;">/</span>
-      <span style="color:#00D4FF;">Samples</span>
+      <a href="index.html" style="color:#8599B0;">Home</a><span style="color:#3D5068;">/</span><span style="color:#00D4FF;">Samples</span>
     </div>
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
       <div style="width:32px;height:1px;background:#FFB347;"></div>
@@ -133,17 +168,19 @@
   </div>
 </section>
 
-<!-- NOTICE STRIP -->
+<!-- NOTICE -->
 <div style="background:#0A1628;border-top:1px solid rgba(255,179,71,0.3);border-bottom:1px solid rgba(255,179,71,0.3);padding:18px 72px;">
   <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="#FFB347" stroke-width="1.2"/><line x1="9" y1="5" x2="9" y2="10" stroke="#FFB347" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="13" r="0.8" fill="#FFB347"/></svg>
-    <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;">All samples are from real completed projects. Client details have been anonymized where applicable. These files are provided for evaluation purposes.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;">All samples are from real completed projects. Client details have been anonymized where applicable.</p>
   </div>
 </div>
 
-<!-- FILTER + SAMPLES GRID -->
+<!-- FILTER + GRID -->
 <section style="padding:80px 72px 120px;background:#050A0F;">
   <div style="max-width:1280px;margin:0 auto;">
+
+    <!-- Filters -->
     <div class="reveal" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:56px;">
       <button class="filter-btn active" data-filter="all" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:10px 22px;background:#00D4FF;color:#050A0F;border:1.5px solid #00D4FF;cursor:pointer;">All Trades</button>
       <button class="filter-btn" data-filter="architectural" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:10px 22px;background:transparent;color:#8599B0;border:1.5px solid rgba(0,212,255,0.2);cursor:pointer;">Architectural</button>
@@ -151,105 +188,303 @@
       <button class="filter-btn" data-filter="finishes" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:10px 22px;background:transparent;color:#8599B0;border:1.5px solid rgba(0,212,255,0.2);cursor:pointer;">Finishes</button>
     </div>
 
-    <div class="samples-grid reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+    <!-- Cards -->
+    <div class="samples-grid reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
 
-      <article class="sample-card" data-cat="finishes" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/drywall.jpg" alt="Drywall estimate sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#FFB347;border:1px solid rgba(255,179,71,0.3);">Finishes</div>
+      <!-- 1. DRYWALL -->
+      <article class="sample-card" data-cat="finishes" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- grid -->
+            <defs><pattern id="g-dw" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-dw)" width="280" height="210"/>
+            <!-- top plate -->
+            <line x1="30" y1="42" x2="250" y2="42" stroke="#FFB347" stroke-width="7" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220" style="animation:draw-line 0.8s 0.1s forwards ease-out"/>
+            <!-- studs -->
+            <line x1="58"  y1="42" x2="58"  y2="162" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" style="animation:draw-line 0.7s 0.5s forwards ease-out"/>
+            <line x1="100" y1="42" x2="100" y2="162" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" style="animation:draw-line 0.7s 0.7s forwards ease-out"/>
+            <line x1="142" y1="42" x2="142" y2="162" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" style="animation:draw-line 0.7s 0.9s forwards ease-out"/>
+            <line x1="184" y1="42" x2="184" y2="162" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" style="animation:draw-line 0.7s 1.1s forwards ease-out"/>
+            <line x1="222" y1="42" x2="222" y2="162" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" style="animation:draw-line 0.7s 1.3s forwards ease-out"/>
+            <!-- bottom plate -->
+            <line x1="30" y1="162" x2="250" y2="162" stroke="#FFB347" stroke-width="7" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220" style="animation:draw-line 0.8s 1.5s forwards ease-out"/>
+            <!-- drywall face -->
+            <rect x="30" y="42" width="220" height="120" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.35)" stroke-width="1" opacity="0" style="animation:fade-in 0.5s 2s forwards"/>
+            <!-- label -->
+            <text x="140" y="192" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.2s forwards">5/8&quot; TYPE-X DRYWALL — 78 UNITS</text>
+            <!-- pulsing nodes at stud-plate intersections -->
+            <circle cx="58"  cy="42"  r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2s infinite, fade-in 0.3s 2s forwards"/>
+            <circle cx="100" cy="42"  r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.2s infinite, fade-in 0.3s 2s forwards"/>
+            <circle cx="142" cy="42"  r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.4s infinite, fade-in 0.3s 2s forwards"/>
+            <circle cx="184" cy="42"  r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.6s infinite, fade-in 0.3s 2s forwards"/>
+            <circle cx="222" cy="42"  r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.8s infinite, fade-in 0.3s 2s forwards"/>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#FFB347;border:1px solid rgba(255,179,71,0.3);">Finishes</div>
         </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Drywall Estimate</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">78-Unit Apartment Building — full board, stud, tape &amp; finish takeoff with labor.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Drywall-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Drywall Estimate</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">78-Unit Apartment Building — full board, stud, tape &amp; finish takeoff.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Drywall-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
         </div>
       </article>
 
-      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/structural-design.jpg" alt="Steel structure shop drawings" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
+      <!-- 2. STEEL SHOP DRAWINGS -->
+      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-sd" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-sd)" width="280" height="210"/>
+            <!-- truss bottom chord -->
+            <line x1="20" y1="155" x2="260" y2="155" stroke="#00D4FF" stroke-width="4" stroke-linecap="round" stroke-dasharray="240" stroke-dashoffset="240" style="animation:draw-line 1s 0.2s forwards ease-out"/>
+            <!-- truss top chord (two rafters) -->
+            <line x1="20"  y1="155" x2="140" y2="55"  stroke="#00D4FF" stroke-width="4" stroke-linecap="round" stroke-dasharray="250" stroke-dashoffset="250" style="animation:draw-line 1s 0.8s forwards ease-out"/>
+            <line x1="260" y1="155" x2="140" y2="55"  stroke="#00D4FF" stroke-width="4" stroke-linecap="round" stroke-dasharray="250" stroke-dashoffset="250" style="animation:draw-line 1s 0.8s forwards ease-out"/>
+            <!-- verticals -->
+            <line x1="80"  y1="130" x2="80"  y2="155" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="40" stroke-dashoffset="40" style="animation:draw-line 0.4s 1.5s forwards"/>
+            <line x1="140" y1="55"  x2="140" y2="155" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="100" style="animation:draw-line 0.6s 1.6s forwards"/>
+            <line x1="200" y1="130" x2="200" y2="155" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="40" stroke-dashoffset="40" style="animation:draw-line 0.4s 1.7s forwards"/>
+            <!-- diagonals -->
+            <line x1="80"  y1="130" x2="140" y2="55"  stroke="rgba(0,212,255,0.5)" stroke-width="2" stroke-dasharray="80" stroke-dashoffset="80" style="animation:draw-line 0.5s 1.9s forwards"/>
+            <line x1="200" y1="130" x2="140" y2="55"  stroke="rgba(0,212,255,0.5)" stroke-width="2" stroke-dasharray="80" stroke-dashoffset="80" style="animation:draw-line 0.5s 2s forwards"/>
+            <!-- nodes -->
+            <circle cx="20"  cy="155" r="5" fill="#FFB347" opacity="0" style="animation:pulse-node 2.5s 2.2s infinite, fade-in 0.3s 2.2s forwards"/>
+            <circle cx="260" cy="155" r="5" fill="#FFB347" opacity="0" style="animation:pulse-node 2.5s 2.3s infinite, fade-in 0.3s 2.3s forwards"/>
+            <circle cx="140" cy="55"  r="6" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.4s infinite, fade-in 0.3s 2.4s forwards"/>
+            <circle cx="80"  cy="130" r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.5s infinite, fade-in 0.3s 2.5s forwards"/>
+            <circle cx="200" cy="130" r="4" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.6s infinite, fade-in 0.3s 2.6s forwards"/>
+            <!-- dimension -->
+            <text x="140" y="192" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.6s forwards">STEEL TRUSS — WAREHOUSE 60&apos; SPAN</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
         </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Steel Structure Shop Drawings</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Warehouse project — complete structural steel fabrication and erection drawings.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Shop-Drawings-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
-        </div>
-      </article>
-
-      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/04/magic-marker-hand-rendering.jpg" alt="3D interior rendering sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
-        </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">3D Interior Floor Plans</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Residential remodel — full 3D rendered floor plans with furniture layout and finishes.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/04/3D-Interior-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
-        </div>
-      </article>
-
-      <article class="sample-card" data-cat="mep" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/plumbing.jpg" alt="Plumbing estimate sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">MEP</div>
-        </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Plumbing Estimate</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Commercial office building — pipe, fixture, and labor cost estimate across all plumbing systems.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Plumbing-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
-        </div>
-      </article>
-
-      <article class="sample-card" data-cat="finishes" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/flooring.jpg" alt="Flooring estimate sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#FFB347;border:1px solid rgba(255,179,71,0.3);">Finishes</div>
-        </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Flooring Estimate</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Multi-family residential — tile, LVT, and carpet takeoff with waste factors and material costs.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Flooring-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Steel Structure Shop Drawings</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Warehouse project — complete structural steel drawings.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Shop-Drawings-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
         </div>
       </article>
 
-      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/framing.jpg" alt="Framing estimate sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
+      <!-- 3. 3D RENDERS / FLOOR PLAN -->
+      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-fp" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-fp)" width="280" height="210"/>
+            <!-- outer walls -->
+            <rect x="30" y="30" width="220" height="150" fill="none" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="740" stroke-dashoffset="740" style="animation:draw-lg 1.4s 0.2s forwards ease-out"/>
+            <!-- interior wall horizontal -->
+            <line x1="30" y1="100" x2="160" y2="100" stroke="#00D4FF" stroke-width="4" stroke-dasharray="130" stroke-dashoffset="130" style="animation:draw-line 0.6s 1.2s forwards ease-out"/>
+            <!-- interior wall vertical -->
+            <line x1="160" y1="30" x2="160" y2="130" stroke="#00D4FF" stroke-width="4" stroke-dasharray="100" stroke-dashoffset="100" style="animation:draw-line 0.5s 1.5s forwards ease-out"/>
+            <!-- door arcs (rooms) -->
+            <path d="M30 85 Q45 85 45 100" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="30" style="animation:draw-line 0.4s 1.8s forwards"/>
+            <path d="M145 30 Q145 45 160 45" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="30" style="animation:draw-line 0.4s 1.9s forwards"/>
+            <path d="M250 120 Q235 120 235 105" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="30" style="animation:draw-line 0.4s 2s forwards"/>
+            <!-- room labels -->
+            <text x="92"  y="70"  text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,212,255,0.55)" opacity="0" style="animation:fade-in 0.4s 2s forwards">BEDROOM</text>
+            <text x="92"  y="128" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,212,255,0.55)" opacity="0" style="animation:fade-in 0.4s 2.1s forwards">KITCHEN</text>
+            <text x="205" y="100" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(0,212,255,0.55)" opacity="0" style="animation:fade-in 0.4s 2.2s forwards">LIVING</text>
+            <!-- compass -->
+            <text x="252" y="26" font-family="monospace" font-size="10" font-weight="bold" fill="#FFB347" opacity="0" style="animation:fade-in 0.4s 2.4s forwards">N↑</text>
+            <text x="140" y="196" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.4s forwards">3D INTERIOR FLOOR PLAN — RESIDENTIAL</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
         </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Framing Estimate</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Single-family home — complete wood framing material and labor estimate with cut list.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Framing-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
-        </div>
-      </article>
-
-      <article class="sample-card" data-cat="mep" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/electrical.jpg" alt="Electrical estimate sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">MEP</div>
-        </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Electrical Takeoff</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Retail center — conduit, wiring, panel, and device schedule with detailed labor units.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Electrical-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
-        </div>
-      </article>
-
-      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
-        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#071220;">
-          <img class="card-img" src="https://syndicateengineering.com/wp-content/uploads/2023/03/lumber.jpg" alt="Lumber takeoff sample" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);"/>
-          <div style="position:absolute;top:12px;left:12px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:4px 10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
-        </div>
-        <div style="padding:24px;">
-          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px;">Lumber Takeoff</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:20px;">Townhouse complex — itemized lumber package by species, size, and quantity with supplier format.</p>
-          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Lumber-Takeoff-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:11px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">3D Interior Floor Plans</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Residential remodel — full 3D rendered plans with finishes.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/04/3D-Interior-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
         </div>
       </article>
 
-    </div>
+      <!-- 4. PLUMBING -->
+      <article class="sample-card" data-cat="mep" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-pl" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-pl)" width="280" height="210"/>
+            <!-- main supply line (horizontal top) -->
+            <line x1="20" y1="55" x2="260" y2="55" stroke="#00D4FF" stroke-width="4" stroke-linecap="round" stroke-dasharray="240" stroke-dashoffset="240" style="animation:draw-line 1s 0.3s forwards"/>
+            <!-- drop branches -->
+            <line x1="70"  y1="55" x2="70"  y2="155" stroke="#00D4FF" stroke-width="3" stroke-dasharray="100" stroke-dashoffset="100" style="animation:draw-line 0.6s 1s forwards"/>
+            <line x1="140" y1="55" x2="140" y2="115" stroke="#00D4FF" stroke-width="3" stroke-dasharray="60"  stroke-dashoffset="60"  style="animation:draw-line 0.4s 1.2s forwards"/>
+            <line x1="210" y1="55" x2="210" y2="155" stroke="#00D4FF" stroke-width="3" stroke-dasharray="100" stroke-dashoffset="100" style="animation:draw-line 0.6s 1.4s forwards"/>
+            <!-- return line (horizontal bottom) -->
+            <line x1="70" y1="155" x2="210" y2="155" stroke="rgba(0,212,255,0.5)" stroke-width="2.5" stroke-dasharray="140" stroke-dashoffset="140" style="animation:draw-line 0.7s 1.8s forwards"/>
+            <!-- flow animation dots on main line -->
+            <line x1="20" y1="55" x2="260" y2="55" stroke="#00D4FF" stroke-width="2" stroke-dasharray="8 16" stroke-dashoffset="0" opacity="0" style="animation:flow-dash 1.2s 2s linear infinite, fade-in 0.3s 2s forwards"/>
+            <!-- fittings (circles) -->
+            <circle cx="70"  cy="55"  r="6" fill="none" stroke="#FFB347" stroke-width="2" opacity="0" style="animation:pulse-node 2s 2s infinite, fade-in 0.3s 2s forwards"/>
+            <circle cx="140" cy="55"  r="6" fill="none" stroke="#FFB347" stroke-width="2" opacity="0" style="animation:pulse-node 2s 2.2s infinite, fade-in 0.3s 2.2s forwards"/>
+            <circle cx="210" cy="55"  r="6" fill="none" stroke="#FFB347" stroke-width="2" opacity="0" style="animation:pulse-node 2s 2.4s infinite, fade-in 0.3s 2.4s forwards"/>
+            <!-- labels -->
+            <text x="20"  y="46" font-family="monospace" font-size="8" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.4s 2.2s forwards">2&quot; SUPPLY</text>
+            <text x="140" y="196" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.4s forwards">PLUMBING ESTIMATE — COMMERCIAL OFFICE</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">MEP</div>
+        </div>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Plumbing Estimate</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Commercial office building — full pipe, fixture &amp; labor estimate.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Plumbing-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        </div>
+      </article>
+
+      <!-- 5. FLOORING -->
+      <article class="sample-card" data-cat="finishes" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-fl" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-fl)" width="280" height="210"/>
+            <!-- tile grid: 5x4 -->
+            <rect x="30"  y="30"  width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.3s forwards ease-out"/>
+            <rect x="78"  y="30"  width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.5s forwards ease-out"/>
+            <rect x="126" y="30"  width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.7s forwards ease-out"/>
+            <rect x="174" y="30"  width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.9s forwards ease-out"/>
+            <rect x="222" y="30"  width="28" height="34" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.4)" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.1s forwards"/>
+            <rect x="30"  y="68"  width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.5s forwards ease-out"/>
+            <rect x="78"  y="68"  width="44" height="34" fill="rgba(0,212,255,0.12)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.7s forwards ease-out"/>
+            <rect x="126" y="68"  width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.9s forwards ease-out"/>
+            <rect x="174" y="68"  width="44" height="34" fill="rgba(0,212,255,0.12)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.1s forwards ease-out"/>
+            <rect x="222" y="68"  width="28" height="34" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.4)" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.3s forwards"/>
+            <rect x="30"  y="106" width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.7s forwards ease-out"/>
+            <rect x="78"  y="106" width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.9s forwards ease-out"/>
+            <rect x="126" y="106" width="44" height="34" fill="rgba(0,212,255,0.12)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.1s forwards ease-out"/>
+            <rect x="174" y="106" width="44" height="34" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.3s forwards ease-out"/>
+            <rect x="222" y="106" width="28" height="34" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.4)" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.5s forwards"/>
+            <rect x="30"  y="144" width="44" height="28" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 0.9s forwards ease-out"/>
+            <rect x="78"  y="144" width="44" height="28" fill="rgba(0,212,255,0.12)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.1s forwards ease-out"/>
+            <rect x="126" y="144" width="44" height="28" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.3s forwards ease-out"/>
+            <rect x="174" y="144" width="44" height="28" fill="rgba(0,212,255,0.07)" stroke="#00D4FF" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.5s forwards ease-out"/>
+            <rect x="222" y="144" width="28" height="28" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.4)" stroke-width="1.2" opacity="0" style="animation:tile-pop 0.3s 1.7s forwards"/>
+            <!-- legend -->
+            <rect x="30" y="182" width="10" height="10" fill="rgba(0,212,255,0.12)" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.4s 2s forwards"/>
+            <text x="45" y="191" font-family="monospace" font-size="8" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.4s 2s forwards">24×24 PORCELAIN — 4,200 SF MULTI-FAMILY</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#FFB347;border:1px solid rgba(255,179,71,0.3);">Finishes</div>
+        </div>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Flooring Estimate</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Multi-family residential — tile, LVT &amp; carpet takeoff.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Flooring-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        </div>
+      </article>
+
+      <!-- 6. FRAMING -->
+      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-fr" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-fr)" width="280" height="210"/>
+            <!-- top plate (double) -->
+            <line x1="25" y1="38" x2="255" y2="38" stroke="#FFB347" stroke-width="7" stroke-linecap="round" stroke-dasharray="230" stroke-dashoffset="230" style="animation:draw-line 0.9s 0.1s forwards"/>
+            <line x1="25" y1="48" x2="255" y2="48" stroke="#FFB347" stroke-width="5" stroke-linecap="round" stroke-dasharray="230" stroke-dashoffset="230" style="animation:draw-line 0.9s 0.2s forwards"/>
+            <!-- studs (16" OC = 7 studs in span) -->
+            <line x1="46"  y1="48" x2="46"  y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 0.6s forwards"/>
+            <line x1="79"  y1="48" x2="79"  y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 0.8s forwards"/>
+            <line x1="112" y1="48" x2="112" y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 1s forwards"/>
+            <line x1="145" y1="48" x2="145" y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 1.2s forwards"/>
+            <line x1="178" y1="48" x2="178" y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 1.4s forwards"/>
+            <line x1="211" y1="48" x2="211" y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 1.6s forwards"/>
+            <line x1="234" y1="48" x2="234" y2="158" stroke="#00D4FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="110" stroke-dashoffset="110" style="animation:draw-line 0.6s 1.8s forwards"/>
+            <!-- sole plate -->
+            <line x1="25" y1="158" x2="255" y2="158" stroke="#FFB347" stroke-width="7" stroke-linecap="round" stroke-dasharray="230" stroke-dashoffset="230" style="animation:draw-line 0.9s 2s forwards"/>
+            <!-- spacing label -->
+            <line x1="46" y1="172" x2="79" y2="172" stroke="rgba(0,212,255,0.4)" stroke-width="1" opacity="0" style="animation:fade-in 0.4s 2.2s forwards"/>
+            <text x="62" y="184" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.4s 2.2s forwards">16&quot; OC</text>
+            <text x="140" y="198" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.4s forwards">WOOD FRAMING — SINGLE FAMILY HOME</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
+        </div>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Framing Estimate</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Single-family home — complete wood framing &amp; cut list.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Framing-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        </div>
+      </article>
+
+      <!-- 7. ELECTRICAL -->
+      <article class="sample-card" data-cat="mep" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-el" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-el)" width="280" height="210"/>
+            <!-- main panel -->
+            <rect x="25" y="55" width="28" height="100" fill="rgba(0,212,255,0.06)" stroke="#00D4FF" stroke-width="2" stroke-dasharray="256" stroke-dashoffset="256" style="animation:draw-line 0.8s 0.2s forwards"/>
+            <text x="39" y="102" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 1s forwards">MDP</text>
+            <!-- horizontal runs -->
+            <line x1="53" y1="75"  x2="240" y2="75"  stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="190" stroke-dashoffset="190" style="animation:draw-line 0.8s 0.8s forwards"/>
+            <line x1="53" y1="105" x2="200" y2="105" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="150" stroke-dashoffset="150" style="animation:draw-line 0.7s 1s forwards"/>
+            <line x1="53" y1="135" x2="240" y2="135" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="190" stroke-dashoffset="190" style="animation:draw-line 0.8s 1.2s forwards"/>
+            <!-- branch drops -->
+            <line x1="110" y1="75"  x2="110" y2="95"  stroke="#00D4FF" stroke-width="2" stroke-dasharray="20" stroke-dashoffset="20" style="animation:draw-line 0.3s 1.5s forwards"/>
+            <line x1="170" y1="75"  x2="170" y2="95"  stroke="#00D4FF" stroke-width="2" stroke-dasharray="20" stroke-dashoffset="20" style="animation:draw-line 0.3s 1.6s forwards"/>
+            <line x1="130" y1="105" x2="130" y2="125" stroke="#00D4FF" stroke-width="2" stroke-dasharray="20" stroke-dashoffset="20" style="animation:draw-line 0.3s 1.7s forwards"/>
+            <line x1="200" y1="135" x2="200" y2="155" stroke="#00D4FF" stroke-width="2" stroke-dasharray="20" stroke-dashoffset="20" style="animation:draw-line 0.3s 1.8s forwards"/>
+            <!-- animated current flow -->
+            <line x1="53" y1="75" x2="240" y2="75" stroke="#FFB347" stroke-width="1.5" stroke-dasharray="6 20" stroke-dashoffset="0" opacity="0" style="animation:flow-dash 0.9s 2s linear infinite, fade-in 0.3s 2s forwards"/>
+            <line x1="53" y1="135" x2="240" y2="135" stroke="#FFB347" stroke-width="1.5" stroke-dasharray="6 20" stroke-dashoffset="0" opacity="0" style="animation:flow-dash 1.2s 2.2s linear infinite, fade-in 0.3s 2.2s forwards"/>
+            <!-- receptacle symbols -->
+            <circle cx="240" cy="75"  r="5" fill="none" stroke="#FFB347" stroke-width="1.5" opacity="0" style="animation:pulse-node 2s 2s infinite, fade-in 0.3s 2s forwards"/>
+            <circle cx="200" cy="105" r="5" fill="none" stroke="#FFB347" stroke-width="1.5" opacity="0" style="animation:pulse-node 2s 2.2s infinite, fade-in 0.3s 2.2s forwards"/>
+            <circle cx="240" cy="135" r="5" fill="none" stroke="#FFB347" stroke-width="1.5" opacity="0" style="animation:pulse-node 2s 2.4s infinite, fade-in 0.3s 2.4s forwards"/>
+            <circle cx="200" cy="155" r="5" fill="none" stroke="#FFB347" stroke-width="1.5" opacity="0" style="animation:pulse-node 2s 2.6s infinite, fade-in 0.3s 2.6s forwards"/>
+            <text x="140" y="196" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.6s forwards">ELECTRICAL TAKEOFF — RETAIL CENTER</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">MEP</div>
+        </div>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Electrical Takeoff</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Retail center — conduit, wiring, panel &amp; device schedule.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Electrical-Estimating-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        </div>
+      </article>
+
+      <!-- 8. LUMBER TAKEOFF -->
+      <article class="sample-card" data-cat="architectural" style="background:rgba(10,22,40,0.8);border:1px solid rgba(0,212,255,0.17);overflow:hidden;">
+        <div class="card-thumb" style="aspect-ratio:4/3;background:#071220;">
+          <svg viewBox="0 0 280 210" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="g-lb" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" class="bp-grid"/></pattern></defs>
+            <rect fill="#071220" width="280" height="210"/>
+            <rect fill="url(#g-lb)" width="280" height="210"/>
+            <!-- stacked lumber boards (animate in from bottom) -->
+            <rect x="40" y="142" width="170" height="14" rx="2" fill="rgba(0,212,255,0.08)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 0.3s forwards ease-out"/>
+            <rect x="40" y="126" width="170" height="14" rx="2" fill="rgba(0,212,255,0.10)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 0.6s forwards ease-out"/>
+            <rect x="40" y="110" width="170" height="14" rx="2" fill="rgba(0,212,255,0.08)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 0.9s forwards ease-out"/>
+            <rect x="40" y="94"  width="170" height="14" rx="2" fill="rgba(0,212,255,0.10)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 1.2s forwards ease-out"/>
+            <rect x="40" y="78"  width="170" height="14" rx="2" fill="rgba(0,212,255,0.08)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 1.5s forwards ease-out"/>
+            <rect x="40" y="62"  width="170" height="14" rx="2" fill="rgba(0,212,255,0.10)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 1.8s forwards ease-out"/>
+            <rect x="40" y="46"  width="170" height="14" rx="2" fill="rgba(0,212,255,0.08)" stroke="#00D4FF" stroke-width="1.5" opacity="0" style="animation:tile-pop 0.3s 2.1s forwards ease-out"/>
+            <!-- board labels -->
+            <text x="125" y="151" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 0.5s forwards">2×4 — 24 LF</text>
+            <text x="125" y="135" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 0.8s forwards">2×6 — 48 LF</text>
+            <text x="125" y="119" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 1.1s forwards">2×8 — 36 LF</text>
+            <text x="125" y="103" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 1.4s forwards">2×10 — 60 LF</text>
+            <text x="125" y="87"  text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 1.7s forwards">4×4 — 18 LF</text>
+            <text x="125" y="71"  text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(0,212,255,0.7)" opacity="0" style="animation:fade-in 0.3s 2s forwards">LVL BEAM — 12 LF</text>
+            <text x="125" y="55"  text-anchor="middle" font-family="monospace" font-size="7.5" fill="#FFB347" opacity="0" style="animation:fade-in 0.3s 2.3s forwards">RIDGE BOARD — 8 LF</text>
+            <!-- total counter -->
+            <text x="225" y="85" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="22" font-weight="700" fill="#00D4FF" opacity="0" style="animation:count-up 0.5s 2.5s forwards">8</text>
+            <text x="225" y="97" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.5)" opacity="0" style="animation:fade-in 0.4s 2.6s forwards">SPECIES</text>
+            <text x="140" y="196" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.6)" opacity="0" style="animation:fade-in 0.5s 2.7s forwards">LUMBER TAKEOFF — TOWNHOUSE COMPLEX</text>
+          </svg>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(5,10,15,0.85);backdrop-filter:blur(8px);padding:3px 9px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#00D4FF;border:1px solid rgba(0,212,255,0.3);">Architectural</div>
+        </div>
+        <div style="padding:22px;">
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:5px;">Lumber Takeoff</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8599B0;line-height:1.6;margin-bottom:16px;">Townhouse complex — itemized lumber package by size.</p>
+          <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Lumber-Takeoff-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:block;text-align:center;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:10px;border:1.5px solid rgba(0,212,255,0.35);">Download PDF ↓</a>
+        </div>
+      </article>
+
+    </div><!-- /samples-grid -->
   </div>
 </section>
 
@@ -265,24 +500,45 @@
     </div>
     <div class="feat-grid reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
       <div class="feat-card" style="background:rgba(5,10,15,0.8);border:1px solid rgba(0,212,255,0.15);border-top:2px solid #00D4FF;padding:44px 36px;">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#00D4FF" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:28px;" aria-hidden="true"><rect x="5" y="3" width="22" height="34" rx="1"/><line x1="9" y1="11" x2="23" y2="11"/><line x1="9" y1="17" x2="23" y2="17"/><line x1="9" y1="23" x2="17" y2="23"/><path d="M29 25 L35 31 L29 37" fill="none"/><line x1="27" y1="31" x2="35" y2="31"/></svg>
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="margin-bottom:28px;" aria-hidden="true">
+          <rect x="4" y="3" width="26" height="38" rx="1" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="128" stroke-dashoffset="128" style="animation:draw-line 1s 0.3s forwards"/>
+          <line x1="8" y1="12" x2="26" y2="12" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.3s forwards"/>
+          <line x1="8" y1="18" x2="26" y2="18" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.4s forwards"/>
+          <line x1="8" y1="24" x2="18" y2="24" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.5s forwards"/>
+          <path d="M32 28 L40 36 L32 44" fill="none" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="30" opacity="0" style="animation:draw-line 0.4s 1.6s forwards, fade-in 0.3s 1.6s forwards"/>
+          <line x1="28" y1="36" x2="40" y2="36" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="12" stroke-dashoffset="12" opacity="0" style="animation:draw-line 0.3s 2s forwards, fade-in 0.3s 2s forwards"/>
+        </svg>
         <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#00D4FF;margin-bottom:14px;">Detailed Estimate</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:12px;line-height:1.3;">Commercial MEP Package</h3>
-        <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:#8599B0;line-height:1.75;margin-bottom:32px;">Full mechanical, electrical, and plumbing cost estimate for a 6-story office building. Includes labor breakdown and material schedules.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:#8599B0;line-height:1.75;margin-bottom:32px;">Full mechanical, electrical, and plumbing cost estimate for a 6-story office building — labor breakdown and material schedules included.</p>
         <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/MEP-Package-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:inline-block;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:12px 24px;border:1.5px solid rgba(0,212,255,0.35);">Download Full Sample ↓</a>
       </div>
       <div class="feat-card" style="background:rgba(5,10,15,0.8);border:1px solid rgba(0,212,255,0.15);border-top:2px solid #FFB347;padding:44px 36px;">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#FFB347" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:28px;" aria-hidden="true"><rect x="3" y="3" width="34" height="34"/><line x1="3" y1="13" x2="37" y2="13"/><line x1="3" y1="23" x2="37" y2="23"/><line x1="13" y1="3" x2="13" y2="37"/><line x1="23" y1="3" x2="23" y2="37"/></svg>
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="margin-bottom:28px;" aria-hidden="true">
+          <rect x="3" y="3" width="38" height="38" stroke="#FFB347" stroke-width="1.5" stroke-dasharray="152" stroke-dashoffset="152" style="animation:draw-line 1.2s 0.2s forwards"/>
+          <line x1="3" y1="15" x2="41" y2="15" stroke="#FFB347" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.4s forwards"/>
+          <line x1="3" y1="29" x2="41" y2="29" stroke="#FFB347" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.5s forwards"/>
+          <line x1="15" y1="3" x2="15" y2="41" stroke="#FFB347" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.6s forwards"/>
+          <line x1="29" y1="3" x2="29" y2="41" stroke="#FFB347" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.7s forwards"/>
+          <circle cx="22" cy="22" r="4" fill="#FFB347" opacity="0" style="animation:pulse-node 2s 2s infinite, fade-in 0.3s 2s forwards"/>
+        </svg>
         <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#FFB347;margin-bottom:14px;">BIM Model</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:12px;line-height:1.3;">Hospital BIM Coordination</h3>
         <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:#8599B0;line-height:1.75;margin-bottom:32px;">Multi-discipline BIM coordination model for a 12-story hospital. Clash detection report and resolved model screenshots included.</p>
         <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/BIM-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:inline-block;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:12px 24px;border:1.5px solid rgba(0,212,255,0.35);">Download Full Sample ↓</a>
       </div>
       <div class="feat-card" style="background:rgba(5,10,15,0.8);border:1px solid rgba(0,212,255,0.15);border-top:2px solid #00D4FF;padding:44px 36px;">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#00D4FF" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:28px;" aria-hidden="true"><rect x="5" y="5" width="30" height="30"/><line x1="5" y1="15" x2="35" y2="15"/><line x1="14" y1="5" x2="14" y2="35"/><circle cx="9.5" cy="10" r="1.5" fill="#00D4FF" stroke="none"/><polyline points="14,28 20,22 26,26 35,18" stroke="#00D4FF" stroke-width="1.5" fill="none"/></svg>
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="margin-bottom:28px;" aria-hidden="true">
+          <rect x="3" y="3" width="38" height="38" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="152" stroke-dashoffset="152" style="animation:draw-line 1.2s 0.2s forwards"/>
+          <line x1="3" y1="13" x2="41" y2="13" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.4s forwards"/>
+          <line x1="13" y1="3" x2="13" y2="13" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.5s forwards"/>
+          <line x1="23" y1="3" x2="23" y2="13" stroke="#00D4FF" stroke-width="1" opacity="0" style="animation:fade-in 0.3s 1.6s forwards"/>
+          <polyline points="7,32 15,24 23,28 37,18" stroke="#00D4FF" stroke-width="2" fill="none" stroke-dasharray="50" stroke-dashoffset="50" opacity="0" style="animation:draw-line 0.7s 1.7s forwards, fade-in 0.3s 1.7s forwards"/>
+          <circle cx="37" cy="18" r="3" fill="#00D4FF" opacity="0" style="animation:pulse-node 2s 2.4s infinite, fade-in 0.3s 2.4s forwards"/>
+        </svg>
         <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#00D4FF;margin-bottom:14px;">Project Schedule</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:12px;line-height:1.3;">Residential Construction Schedule</h3>
-        <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:#8599B0;line-height:1.75;margin-bottom:32px;">12-month master schedule for a 24-unit residential development. Includes critical path, milestones, and resource loading.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:#8599B0;line-height:1.75;margin-bottom:32px;">12-month master schedule for a 24-unit residential development. Critical path, milestones, and resource loading.</p>
         <a href="https://syndicateengineering.com/wp-content/uploads/2023/03/Schedule-Sample.pdf" target="_blank" rel="noopener" class="dl-btn" style="display:inline-block;background:transparent;color:#00D4FF;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:12px 24px;border:1.5px solid rgba(0,212,255,0.35);">Download Full Sample ↓</a>
       </div>
     </div>
@@ -304,22 +560,22 @@
       <div style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.15);padding:40px 32px;">
         <div style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:16px;letter-spacing:-0.03em;">XLS</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:10px;">Spreadsheet Takeoffs</h3>
-        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Fully unlocked Excel files with itemized quantities, unit costs, labor, and totals — ready to import into any estimating platform.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Fully unlocked Excel files with itemized quantities, unit costs, labor, and totals.</p>
       </div>
       <div style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.15);border-left:none;padding:40px 32px;">
         <div style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:16px;letter-spacing:-0.03em;">PDF</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:10px;">Marked-Up Plans</h3>
-        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Color-coded plan markups showing exactly what was measured — so you can verify every count against the drawings yourself.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Color-coded markups showing exactly what was measured.</p>
       </div>
       <div style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.15);border-left:none;padding:40px 32px;">
         <div style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:16px;letter-spacing:-0.03em;">DWG</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:10px;">CAD &amp; BIM Files</h3>
-        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Native AutoCAD and Revit files with full layer structure — ready for coordination or direct use in your project workflow.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Native AutoCAD and Revit files with full layer structure.</p>
       </div>
       <div style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.15);border-left:none;padding:40px 32px;">
         <div style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:#FFB347;line-height:1;margin-bottom:16px;letter-spacing:-0.03em;">24H</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:10px;">Fast Turnaround</h3>
-        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Most estimates delivered within 24–48 hours of plan receipt. Rush delivery available for urgent bid deadlines.</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8599B0;line-height:1.7;">Most estimates delivered within 24–48 hours of plan receipt.</p>
       </div>
     </div>
   </div>
@@ -339,10 +595,7 @@
   <div style="max-width:1280px;margin:0 auto;">
     <div class="footer-grid" style="display:grid;grid-template-columns:1.7fr 1fr 1.3fr 1fr;gap:64px;margin-bottom:64px;">
       <div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="13" height="13" stroke="#00D4FF" stroke-width="1.5"/><rect x="18" y="18" width="13" height="13" stroke="#FFB347" stroke-width="1.5"/><rect x="18" y="1" width="13" height="13" stroke="#00D4FF" stroke-width="1.5" opacity="0.35"/><rect x="1" y="18" width="13" height="13" stroke="#00D4FF" stroke-width="1.5" opacity="0.35"/></svg>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.05em;color:#fff;">SYNDICATE <span style="color:#00D4FF;">ENGINEERING</span></div>
-        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="13" height="13" stroke="#00D4FF" stroke-width="1.5"/><rect x="18" y="18" width="13" height="13" stroke="#FFB347" stroke-width="1.5"/><rect x="18" y="1" width="13" height="13" stroke="#00D4FF" stroke-width="1.5" opacity="0.35"/><rect x="1" y="18" width="13" height="13" stroke="#00D4FF" stroke-width="1.5" opacity="0.35"/></svg><div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.05em;color:#fff;">SYNDICATE <span style="color:#00D4FF;">ENGINEERING</span></div></div>
         <p style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:#8599B0;line-height:1.85;margin-bottom:32px;">Your Best Pre-Construction Partner. Engineering precision across every phase of construction, delivered worldwide.</p>
         <div style="display:flex;gap:12px;">
           <a href="https://www.linkedin.com/company/syndicate-engineering-services" class="social-btn" style="width:38px;height:38px;border:1px solid rgba(0,212,255,0.2);display:flex;align-items:center;justify-content:center;transition:border-color 0.2s,background 0.2s;" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="#8599B0" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -375,10 +628,7 @@
     </div>
     <div style="border-top:1px solid rgba(0,212,255,0.1);padding:24px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
       <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:#8599B0;font-weight:300;">© 2026 Syndicate Engineering. All rights reserved.</div>
-      <div style="display:flex;gap:28px;">
-        <a href="#" class="footer-link" style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8599B0;font-weight:300;transition:color 0.2s;">Privacy Policy</a>
-        <a href="#" class="footer-link" style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8599B0;font-weight:300;transition:color 0.2s;">Terms of Service</a>
-      </div>
+      <div style="display:flex;gap:28px;"><a href="#" class="footer-link" style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8599B0;font-weight:300;transition:color 0.2s;">Privacy Policy</a><a href="#" class="footer-link" style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8599B0;font-weight:300;transition:color 0.2s;">Terms of Service</a></div>
     </div>
   </div>
 </footer>
@@ -396,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var nav = document.getElementById('main-nav');
   window.addEventListener('scroll', function() { nav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
   var reveals = document.querySelectorAll('.reveal');
-  var obs = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+  var obs = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
   reveals.forEach(function(el) { obs.observe(el); });
 
   var btns = document.querySelectorAll('.filter-btn');
