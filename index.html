@@ -106,6 +106,25 @@
 
   .footer-link:hover { color: #00D4FF !important; }
   .social-btn:hover { border-color: #00D4FF !important; background: rgba(0,212,255,0.08) !important; }
+
+  /* Mobile: teaser image grid → single column */
+  @media (max-width: 640px) {
+    .teaser-grid { grid-template-columns: 1fr !important; }
+    .teaser-grid .t-tile { aspect-ratio: 16/9 !important; }
+  }
+  /* Mobile: footer horizontal padding */
+  @media (max-width: 768px) {
+    footer { padding-left: 28px !important; padding-right: 28px !important; }
+  }
+  /* Mobile: stat counter font size */
+  @media (max-width: 480px) {
+    [data-count] { font-size: 46px !important; }
+    .stat-item { padding: 40px 20px !important; }
+  }
+  /* Mobile: CTA banner padding */
+  @media (max-width: 768px) {
+    .sec { padding-left: 28px !important; padding-right: 28px !important; }
+  }
 </style>
 </head>
 <body>

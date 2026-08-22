@@ -52,6 +52,22 @@
 
   .footer-link:hover { color: #00D4FF !important; }
   .social-btn:hover { border-color: #00D4FF !important; background: rgba(0,212,255,0.08) !important; }
+
+  /* Mobile: featured deliverables grid */
+  @media (max-width: 900px) { .feat-grid { grid-template-columns: 1fr 1fr !important; } }
+  @media (max-width: 560px) { .feat-grid { grid-template-columns: 1fr !important; } }
+  /* Mobile: "What You Receive" 4-column grid */
+  @media (max-width: 768px) { .receive-grid { grid-template-columns: 1fr 1fr !important; } }
+  @media (max-width: 480px) { .receive-grid { grid-template-columns: 1fr !important; } }
+  /* Mobile: footer padding */
+  @media (max-width: 768px) {
+    footer { padding-left: 28px !important; padding-right: 28px !important; }
+    .sec-inner { padding-left: 28px !important; padding-right: 28px !important; }
+  }
+  /* Mobile: section padding */
+  @media (max-width: 768px) {
+    section[style*="padding:"] { padding-left: 28px !important; padding-right: 28px !important; }
+  }
 </style>
 </head>
 <body>
@@ -284,7 +300,7 @@
       </div>
       <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,48px);font-weight:700;letter-spacing:-0.02em;color:#fff;">What You Actually Receive</h2>
     </div>
-    <div class="reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+    <div class="reveal receive-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
       <div style="background:rgba(10,22,40,0.65);border:1px solid rgba(0,212,255,0.15);padding:40px 32px;">
         <div style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:#00D4FF;line-height:1;margin-bottom:16px;letter-spacing:-0.03em;">XLS</div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:10px;">Spreadsheet Takeoffs</h3>
